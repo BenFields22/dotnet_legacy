@@ -11,7 +11,10 @@ jobs:
     runs-on: self-hosted
  
     steps:
-    - uses: actions/checkout@v1
+    - name: Configure Git
+      run:  git config --global url.'https://${{ secrets.SPECIAL_TOKEN }}:@github.com'.insteadOf 'https://github.com'
+      
+    - uses: actions/checkout@v3
       name: Checkout Code
      
     - name: Setup MSBuild Path
@@ -21,7 +24,7 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.2
      
     - name: Restore NuGet Packages
-      run: nuget restore SimpleFrameworkApp.sln
+      run: nuget restore webapplication3.sln
  
     - name: Build and Publish Web App
       run: msbuild webapplication3.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
